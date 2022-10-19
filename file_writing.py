@@ -1,25 +1,33 @@
-from get_data import last_names, get_name, telephone, info, dic
-from pathlib import Path
+from os import path
 
-phonebook = dic(last_names(), get_name(), telephone(), info())
-
-
-def writing_scv(phonebook):
-    file = Path("Python_seminars", "SEM_7", 'Phonebook.csv')
-    with open(file, 'a', encoding='utf-8') as data:
+def writing_scv(file_name, dict_name: dict):
+    with open(file_name, 'a', encoding='utf-8') as data:
         data.write('№,Фамилия,Имя,Номер телефона,Описание\n')
-        for k, v in phonebook.items():
+        for key, val in dict_name.items():
+            data.write('{}:{}\n'.format(key,val))
+
+
+def writing_txt(file_name, dict_name:dict):
+    with open(file_name, 'a', encoding='utf-8') as data:
+        for key, val in dict_name.items():
             data.write(
-                f'{k},{v[0]},{v[1]},{v[2]},{v[3]}\n')
+                f'№ {key}\nФамилия: {val[0]}\nИмя: {val[1]}\nНомер телефона: {val[2]}\nОписание: {val[3]}\n\n')
+            
+def record_all(file_name, file_1, file_2):  # запись данных из всех файлов в отдельный фаил Phonebook_all.csv
+     with open(file_name, 'w', encoding='utf-8') as rec_text:
+        if path.exists(file_1) and path.exists(file_2):
+             with open(file_1, 'r', encoding='utf-8') as text_1,\
+                 open(file_2, 'r', encoding='utf-8') as text_2:
+                 t_1 = text_1.readlines()
+                 rec_text.write(f'Данные из телефонного справочника в файле {file_1}!\n')
+                 for i, v in enumerate(t_1):
+                    rec_text.write(f'{v.strip()}\n')
+                 t_2 = text_2.readlines()
+                 rec_text.write(f'\n\n\nДанные из телефонного справочника в файле {file_2}!\n')
+                 for i, v in enumerate(t_2):
+                    rec_text.write(f'{v.strip()}\n')
+                 print(f'Все данные успешно занесены в файл {file_name}')
+                 
+                             
 
 
-def writing_txt(phonebook):
-    file = Path("Python_seminars", "SEM_7", 'Phonebook.txt')
-    with open(file, 'a', encoding='utf-8') as data:
-        for k, v in phonebook.items():
-            data.write(
-                f'№ {k}\n\nФамилия: {v[0]}\n\nИмя: {v[1]}\n\nНомер телефона: {v[2]}\n\nОписание: {v[3]}\n\n\n')
-
-
-writing_txt(phonebook)
-writing_scv(phonebook)

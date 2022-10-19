@@ -28,4 +28,4 @@ def data_entry():
     return pb
 
 
-print(data_entry())
+
